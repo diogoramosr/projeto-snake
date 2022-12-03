@@ -6,8 +6,8 @@ from pygame.locals import *
 
 
 def grid():
-    x = random.randint(0, 590)
-    y = random.randint(0, 590)
+    x = random.randint(0, 500)
+    y = random.randint(0, 500)
     # divisão por 10 para que o grid fique sempre alinhado, sem sobras
     return (x//10 * 10, y//10 * 10)
 
@@ -78,12 +78,6 @@ while not game_over:
         game_over = True
         break
 
-    # verifica se a cobra atingiu a si mesma
-    for i in range(1, len(snake) - 1):
-        if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:
-            game_over = True
-            break
-
     if game_over:
         break
 
@@ -123,13 +117,49 @@ while True:
     game_over_rect = game_over_screen.get_rect()
     game_over_rect.midtop = (500 / 2, 10)
 
+    # mostrando o texto caso queira continuar jogando
+    continue_font = pygame.font.Font('freesansbold.ttf', 20)
+    continue_screen = continue_font.render(
+        'Continuar(C)', True, (255, 255, 255))
+    continue_rect = continue_screen.get_rect()
+    continue_rect.midtop = (500 / 2, 50)
+
+    # mostrando o texto caso queira sair do jogo
+    exit_font = pygame.font.Font('freesansbold.ttf', 20)
+    exit_screen = exit_font.render('Sair(S)', True, (255, 255, 255))
+    exit_rect = exit_screen.get_rect()
+    exit_rect.midtop = (500 / 2, 80)
+
     # desenhando o texto na tela
     screen.blit(game_over_screen, game_over_rect)
+    screen.blit(continue_screen, continue_rect)
+    screen.blit(exit_screen, exit_rect)
+
     pygame.display.update()
     pygame.time.wait(500)
+
     # loop para reiniciar o jogo
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 exit()
+            if event.type == KEYDOWN:
+                if event.key == pygame.MOUSEBUTTONDOWN:
+                    # reiniciando as variaveis que acontecem durante o tempo de execucao
+                    snake = [(200, 200), (210, 200), (220, 200)]
+                    direcao = LEFT
+                    score = 0
+                    game_over = False
+                    break
+                if event.key == K_s:
+                    pygame.quit()
+                    exit()
+
+"""
+# verifica se a cobra atingiu a si mesma
+    for i in range(1, len(snake) - 1):
+        if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:
+            game_over = True
+            break
+"""
