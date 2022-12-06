@@ -1,10 +1,15 @@
+
+import RPi.GPIO as GPI
+import time
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarinigs(False)
+GPIO.setup(18, GPIO.OUT)
+GPIO.setup(23, GPIO.OUT)
 import pygame
 import random
 from pygame.locals import *
 
 # função aleatória para gerar sempre um grid
-
-
 def grid():
     x = random.randint(0, 500)
     y = random.randint(0, 500)
@@ -12,8 +17,6 @@ def grid():
     return (x//10 * 10, y//10 * 10)
 
 # função para pegar a colisão
-
-
 def colisao(cobra, comida):
     # se a cabeça da cobra for igual a comida, retorna verdadeiro
     return (cobra[0] == comida[0]) and (cobra[1] == comida[1])
@@ -30,6 +33,7 @@ pygame.init()
 screen = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("Snake")
 def gameloop():
+    GPIO.output(23, GPIO.LOW)
     # modelo da snake
     snake = [(200, 200), (210, 200), (220, 200)]
     snake_model = pygame.Surface((10, 10))
@@ -69,9 +73,12 @@ def gameloop():
 
         # pegando a colisão
         if colisao(snake[0], comida_pos):
+            GPIO.output(18,GPIO.HIGH)
             comida_pos = grid()
             snake.append((0, 0))
             score += 1
+            time.sleep(0.2)
+            GPIO.output(18,GPIO.LOW)
 
         # colisão com a parede
         if snake[0][0] == 500 or snake[0][0] < 0 or snake[0][1] == 500 or snake[0][1] < 0:
@@ -111,6 +118,7 @@ def gameloop():
 
 
     while game_over:
+        GPIO.output(23,GPIO.HIGH)
         # loop para o fim do jogo
         game_over_font = pygame.font.Font('freesansbold.ttf', 30)
         game_over_screen = game_over_font.render(
@@ -149,14 +157,7 @@ def gameloop():
                     if event.key == K_c:
                         gameloop()                                        
                     if event.key == K_s:
+                        GPIO.output(23,GPIO.LOW)
                         pygame.quit()
                         exit()
 gameloop()
-
-"""
-# verifica se a cobra atingiu a si mesma
-    for i in range(1, len(snake) - 1):
-        if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:
-            game_over = True
-            break
-"""
