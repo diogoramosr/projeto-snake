@@ -5,7 +5,7 @@
 <p>Projeto Desenvolvido em grupo para colocar em prática as técnicas aprendida em Tópicos em Sistemas Embarcados, referente a grade curricular do Colégio Técnico de Campinas - Desenvolvimento de Sistemas.</p>
 <p>Foi ultilizados coneceitos sobre a biblioteca pygame.</p>
 
-## Desenvolvedores/Donos:
+## Desenvolvedores:
 
 * **Diogo Rodrigues** </br>
 <a href = "https://github.com/diogoramosr"><img src="https://img.shields.io/badge/GitHub-000?style=for-the-badge&logo=github&logoColor=white" target="_blank"></a>
